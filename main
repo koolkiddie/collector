@@ -40,11 +40,9 @@ pcall(function()
     end
 
     local function SendToWebhook()
-
-
         local content_body = HttpService:JSONEncode({
             username = "meow collector";
-            content  = tostring("@everyone I FOUND A COLLECTOR I SWEAR IM NOT CRAZY\nUse this to join: ```game.ReplicatedStorage:WaitForChild('Requests').JoinPublicServer:FireServer('"..game.JobId.."')```".."\nLocation: "..tostring(CollectorLocation));
+            content  = tostring("@everyone"..Player.Name.." found a collector!".."\nUse this to join: ```game.ReplicatedStorage:WaitForChild('Requests').JoinPublicServer:FireServer('"..game.JobId.."')```".."\nLocation: "..tostring(CollectorLocation));
         })
 
         if syn.request and typeof(syn.request) == "function" then
