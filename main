@@ -1,0 +1,141 @@
+local Enabled = true
+local Webhook = "https://discord.com/api/webhooks/881712729755373649/G7VLNM6HvYZZkXuW_NLrG3-6P9opX-uGDAOkEcyNXQd9_j5tPoFCa0r9D1qvvAyssJvR"
+
+pcall(function()
+    if game.PlaceId ~= 3541987450 or Enabled == false or game.PlaceId == 3016661674 then
+        print("")
+        return
+    end
+
+    rconsoleprint('@@BLUE@@')
+    rconsolename("lostics little cat boy collector tool")
+
+    local ReplicatedStorage = game:GetService("ReplicatedStorage")
+    local ServerInfo = ReplicatedStorage:WaitForChild("ServerInfo")
+    local Player = game.Players.LocalPlayer
+    local Servers = ServerInfo:GetChildren()
+    local UIS = game:GetService("UserInputService")
+    local RandomServer = Servers[math.random(1, #Servers)]
+    local CollectorLocation
+    local Sent = false
+    local Players = game:GetService("Players")
+	local RunService = game:GetService("RunService")
+	local HttpService = game:GetService("HttpService")
+	local ReplicatedStorage = game:GetService("ReplicatedStorage")
+	local StarterGui = game:GetService("StarterGui")
+	local CoreGui = game:GetService("CoreGui")
+	local TweenService = game:GetService("TweenService")
+	local TeleportService = game:GetService("TeleportService")
+	local VirtualUser = game:GetService("VirtualUser")
+	local LogService = game:GetService("LogService")
+    
+    local function NewServer()
+        RandomServer = Servers[math.random(1, #Servers)]
+        print(RandomServer)
+    end
+    
+    local function ServerHop()
+        game.ReplicatedStorage:WaitForChild("Requests").JoinPublicServer:FireServer(string.lower(RandomServer.Name))
+        rconsoleprint('\nServer hopping...'.."\nNew Server: "..game.JobId.." ("..tostring(RandomServer.ServerName.Value)..")")
+    end
+
+    local function SendToWebhook()
+
+
+        local content_body = HttpService:JSONEncode({
+            username = "meow collector";
+            content  = tostring("@everyone I FOUND A COLLECTOR I SWEAR IM NOT CRAZY\nUse this to join: ```game.ReplicatedStorage:WaitForChild('Requests').JoinPublicServer:FireServer('"..game.JobId.."')```".."\nLocation: "..tostring(CollectorLocation));
+        })
+
+        if syn.request and typeof(syn.request) == "function" then
+            syn.request({
+                Url = Webhook;
+                Method = "POST";
+                Body = content_body;
+                Headers = {
+                    ["Content-Type"] = "application/json"
+                }
+            })
+        else
+            game:HttpPost(Webhook, content_body, false, "application/json")
+        end
+    end
+
+    local function IdentifyCollector()
+        for i,v in pairs(workspace:GetDescendants()) do
+            if v:IsA("Part") and v.Name == "Part" then
+                if v:FindFirstChild("Exit") then
+                    if v.BrickColor == BrickColor.new("Fawn brown") and v.Transparency == 1 and Sent == false then
+                        CollectorLocation = "Desert"
+                        SendToWebhook()
+                        Sent = true
+                    end
+
+                    if v.BrickColor == BrickColor.new("Bronze") and v.Transparency == 1 and Sent == false then
+                        CollectorLocation = "Jungle"
+                        SendToWebhook()
+                        Sent = true
+                    end
+
+                    if v.BrickColor == BrickColor.new("Smokey grey") and v.Transparency == 1 and Sent == false then
+                        CollectorLocation = "Plains"
+                        SendToWebhook()
+                        Sent = true
+                    end
+
+                    if v.BrickColor == BrickColor.new("Dark stone grey") and v.Transparency == 1 and Sent == false then
+                        CollectorLocation = "Beach"
+                        SendToWebhook()
+                        Sent = true
+                    end
+                end
+            end
+        end
+    end
+    
+    UIS.InputBegan:Connect(function(input, stuff)
+        if input.UserInputType == Enum.UserInputType.Keyboard then
+            if input.KeyCode == Enum.KeyCode.E then
+                if string.lower(RandomServer.Name) == tostring(game.JobId) then
+                    NewServer()
+                    ServerHop()
+                else
+                    ServerHop()
+                end
+            end
+        end
+    end)
+
+    game.ReplicatedStorage:WaitForChild("Requests"):WaitForChild("DevilDoor").OnClientEvent:Connect(function()
+		IdentifyCollector()
+	end)
+    
+    UIS.InputBegan:Connect(function(input, stuff)
+        if input.UserInputType == Enum.UserInputType.Keyboard then
+            if input.KeyCode == Enum.KeyCode.Z then
+                firesignal(Player.PlayerGui.StartMenu.Choices.Play.MouseButton1Click)
+
+                while wait(2) do
+                    IdentifyCollector()
+                end
+            end
+        end
+    end)
+    
+    Player.OnTeleport:Connect(function(State, PlaceId, Spawn)
+        if State.Name == "Failed" then
+            rconsoleprint('@@RED@@')
+            rconsoleprint("\nServer hop failed...")
+            rconsoleprint('@@BLUE@@')
+            delay(math.random(5, 6), function()
+                NewServer()
+                ServerHop()
+            end)
+        end
+        if State.Name == "InProgress" then
+            rconsoleprint('@@GREEN@@')
+            rconsoleprint("\nServer hop success...")
+            rconsoleprint('@@BLUE@@')
+        end
+    end)
+end)
