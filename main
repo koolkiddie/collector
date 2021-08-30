@@ -1,9 +1,8 @@
-local Enabled = true
 local Webhook = "https://discord.com/api/webhooks/881712729755373649/G7VLNM6HvYZZkXuW_NLrG3-6P9opX-uGDAOkEcyNXQd9_j5tPoFCa0r9D1qvvAyssJvR"
 
-pcall(function()
-    if game.PlaceId ~= 3541987450 or Enabled == false or game.PlaceId == 3016661674 then
-        print("")
+local success, err = pcall(function()
+    task.wait()
+    if game.PlaceId ~= 3541987450 then
         return
     end
 
@@ -18,22 +17,12 @@ pcall(function()
     local RandomServer = Servers[math.random(1, #Servers)]
     local CollectorLocation
     local Sent = false
-    local Players = game:GetService("Players")
-	local RunService = game:GetService("RunService")
 	local HttpService = game:GetService("HttpService")
-	local ReplicatedStorage = game:GetService("ReplicatedStorage")
-	local StarterGui = game:GetService("StarterGui")
-	local CoreGui = game:GetService("CoreGui")
-	local TweenService = game:GetService("TweenService")
-	local TeleportService = game:GetService("TeleportService")
-	local VirtualUser = game:GetService("VirtualUser")
-	local LogService = game:GetService("LogService")
-    
+
     local function NewServer()
         RandomServer = Servers[math.random(1, #Servers)]
-        print(RandomServer)
     end
-    
+
     local function ServerHop()
         game.ReplicatedStorage:WaitForChild("Requests").JoinPublicServer:FireServer(string.lower(RandomServer.Name))
         rconsoleprint('\nServer hopping...'.."\nNew Server: "..game.JobId.." ("..tostring(RandomServer.ServerName.Value)..")")
@@ -60,37 +49,40 @@ pcall(function()
     end
 
     local function IdentifyCollector()
-        for i,v in pairs(workspace:GetDescendants()) do
-            if v:IsA("Part") and v.Name == "Part" then
-                if v:FindFirstChild("Exit") then
-                    if v.BrickColor == BrickColor.new("Fawn brown") and v.Transparency == 1 and Sent == false then
-                        CollectorLocation = "Desert"
-                        SendToWebhook()
-                        Sent = true
-                    end
-
-                    if v.BrickColor == BrickColor.new("Bronze") and v.Transparency == 1 and Sent == false then
-                        CollectorLocation = "Jungle"
-                        SendToWebhook()
-                        Sent = true
-                    end
-
-                    if v.BrickColor == BrickColor.new("Smokey grey") and v.Transparency == 0 and Sent == false then
-                        CollectorLocation = "Plains"
-                        SendToWebhook()
-                        Sent = true
-                    end
-
-                    if v.BrickColor == BrickColor.new("Dark stone grey") and v.Transparency == 1 and Sent == false then
-                        CollectorLocation = "Beach"
-                        SendToWebhook()
-                        Sent = true
+        if not Player.Character:FindFirstChild("Immortal") then
+            print("scanning")
+            for i,v in pairs(workspace:GetDescendants()) do
+                if v:IsA("Part") and v.Name == "Part" then
+                    if v:FindFirstChild("Exit") then
+                        if v.BrickColor == BrickColor.new("Fawn brown") and v.Transparency == 1 and Sent == false then
+                            CollectorLocation = "Desert"
+                            SendToWebhook()
+                            Sent = true
+                        end
+    
+                        if v.BrickColor == BrickColor.new("Bronze") and v.Transparency == 1 and Sent == false then
+                            CollectorLocation = "Jungle"
+                            SendToWebhook()
+                            Sent = true
+                        end
+    
+                        if v.BrickColor == BrickColor.new("Smoky grey") and v.Transparency == 1 and Sent == false then
+                            CollectorLocation = "Plains"
+                            SendToWebhook()
+                            Sent = true
+                        end
+    
+                        if v.BrickColor == BrickColor.new("Dark stone grey") and v.Transparency == 1 and Sent == false then
+                            CollectorLocation = "Beach"
+                            SendToWebhook()
+                            Sent = true
+                        end
                     end
                 end
             end
-        end
+        end 
     end
-    
+
     UIS.InputBegan:Connect(function(input, stuff)
         if input.UserInputType == Enum.UserInputType.Keyboard then
             if input.KeyCode == Enum.KeyCode.E then
@@ -107,7 +99,7 @@ pcall(function()
     game.ReplicatedStorage:WaitForChild("Requests"):WaitForChild("DevilDoor").OnClientEvent:Connect(function()
 		IdentifyCollector()
 	end)
-    
+
     UIS.InputBegan:Connect(function(input, stuff)
         if input.UserInputType == Enum.UserInputType.Keyboard then
             if input.KeyCode == Enum.KeyCode.Z then
@@ -137,3 +129,7 @@ pcall(function()
         end
     end)
 end)
+
+if err then
+    print(err)
+end
