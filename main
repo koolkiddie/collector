@@ -50,7 +50,6 @@ local success, err = pcall(function()
 
     local function IdentifyCollector()
         if not Player.Character:FindFirstChild("Immortal") then
-            print("scanning")
             for i,v in pairs(workspace:GetDescendants()) do
                 if v:IsA("Part") and v.Name == "Part" then
                     if v:FindFirstChild("Exit") then
