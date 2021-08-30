@@ -65,26 +65,26 @@ pcall(function()
                 if v:FindFirstChild("Exit") then
                     if v.BrickColor == BrickColor.new("Fawn brown") and v.Transparency == 1 and Sent == false then
                         CollectorLocation = "Desert"
-                        SendToWebhook()
                         Sent = true
+                        SendToWebhook()
                     end
 
                     if v.BrickColor == BrickColor.new("Bronze") and v.Transparency == 1 and Sent == false then
                         CollectorLocation = "Jungle"
-                        SendToWebhook()
                         Sent = true
+                        SendToWebhook()
                     end
 
                     if v.BrickColor == BrickColor.new("Smokey grey") and v.Transparency == 1 and Sent == false then
                         CollectorLocation = "Plains"
-                        SendToWebhook()
                         Sent = true
+                        SendToWebhook()
                     end
 
-                    if v.BrickColor == BrickColor.new("Dark stone grey") and v.Transparency == 0 and Sent == false then
+                    if v.BrickColor == BrickColor.new("Dark stone grey") and v.Transparency == 1 and Sent == false then
                         CollectorLocation = "Beach"
-                        SendToWebhook()
                         Sent = true
+                        SendToWebhook()
                     end
                 end
             end
