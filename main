@@ -75,7 +75,7 @@ pcall(function()
                         SendToWebhook()
                     end
 
-                    if v.BrickColor == BrickColor.new("Smokey grey") and v.Transparency == 1 and Sent == false then
+                    if v.BrickColor == BrickColor.new("Smokey grey") and v.Transparency == 0 and Sent == false then
                         CollectorLocation = "Plains"
                         Sent = true
                         SendToWebhook()
