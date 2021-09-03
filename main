@@ -104,7 +104,7 @@ local success, err = pcall(function()
 		pcall(function()
 			for i, v in pairs(Players:GetChildren()) do
 				if v ~= Players.LocalPlayer and 300 > (v.Character.HumanoidRootPart.Position - Players.LocalPlayer.Character.HumanoidRootPart.Position).Magnitude then
-					print(v.Name)
+					ServerHop()
 				end
 			end
 		end)
@@ -123,6 +123,7 @@ local success, err = pcall(function()
 
 	while CheckTimes < 4 do
 		task.wait(2)
+		CheckNearPlayers()
 		IdentifyCollector()
 	end
 
