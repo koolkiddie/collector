@@ -21,7 +21,7 @@ local success, err = pcall(function()
 	local HttpService = game:GetService("HttpService")
 	local FoundCollector = false
 	local CheckTimes = 0
-	local Reason = ""
+	local Reason = "nil"
 
 	while task.wait() and true do
 		if Players and Players.LocalPlayer and ReplicatedStorage:FindFirstChild("Requests") and ReplicatedStorage:FindFirstChild("ServerInfo") and game:IsLoaded() and Players.LocalPlayer:FindFirstChild("PlayerGui") and Players.LocalPlayer.PlayerGui:FindFirstChild("StartMenu") and Players.LocalPlayer.PlayerGui.StartMenu:FindFirstChild("Finish") then
@@ -106,6 +106,7 @@ local success, err = pcall(function()
 			for i, v in pairs(Players:GetChildren()) do
 				if v ~= Players.LocalPlayer and 300 > (v.Character.HumanoidRootPart.Position - Players.LocalPlayer.Character.HumanoidRootPart.Position).Magnitude then
 					Reason = "Player too close"
+					task.wait(0.1)
 					ServerHop()
 				end
 			end
@@ -131,6 +132,7 @@ local success, err = pcall(function()
 
 	if (FoundCollector == false) then
 		Reason = "No Collector In Server"
+		task.wait(0.1)
 		ServerHop()
 	end
 	Player.OnTeleport:Connect(function(State, PlaceId, Spawn)
@@ -145,7 +147,7 @@ local success, err = pcall(function()
 		end
 		if State.Name == "InProgress" then
 			rconsoleprint('@@GREEN@@')
-			rconsoleprint("\nServer hop success...".." ("..Reason..")")
+			rconsoleprint("\nServer hop success...".."("..tostring(Reason)..")")
 			rconsoleprint('@@BLUE@@')
 		end
 	end)
