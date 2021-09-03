@@ -121,9 +121,14 @@ local success, err = pcall(function()
 	firesignal(Player.PlayerGui:WaitForChild("StartMenu"):WaitForChild("Choices"):WaitForChild("Play", math.huge).MouseButton1Click)
 	task.wait(0.7)
 	CheckNearPlayers()
+	local checkagain = 0
+	while checkagain < 14 do
+		task.wait(0.5)
+		checkagain = checkagain + 1
+		CheckNearPlayers()
+	end
 	task.wait(6.5)
 	GetOutOfFF()
-
 	while CheckTimes < 6 do
 		task.wait(2)
 		CheckNearPlayers()
