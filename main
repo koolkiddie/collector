@@ -124,7 +124,7 @@ local success, err = pcall(function()
 	task.wait(6.5)
 	GetOutOfFF()
 
-	while CheckTimes < 5 do
+	while CheckTimes < 6 do
 		task.wait(2)
 		CheckNearPlayers()
 		IdentifyCollector()
