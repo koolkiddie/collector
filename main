@@ -106,7 +106,7 @@ local success, err = pcall(function()
 			for i, v in pairs(Players:GetChildren()) do
 				if v ~= Players.LocalPlayer and 300 > (v.Character.HumanoidRootPart.Position - Players.LocalPlayer.Character.HumanoidRootPart.Position).Magnitude then
 					Reason = "Player too close"
-					task.wait(0.1)
+					task.wait(0.3)
 					ServerHop()
 				end
 			end
@@ -124,7 +124,7 @@ local success, err = pcall(function()
 	task.wait(6.5)
 	GetOutOfFF()
 
-	while CheckTimes < 4 do
+	while CheckTimes < 5 do
 		task.wait(2)
 		CheckNearPlayers()
 		IdentifyCollector()
