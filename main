@@ -71,7 +71,7 @@ local success, err = pcall(function()
 			for i, v in pairs(workspace:GetDescendants()) do
 				if v:IsA("Part") and v.Name == "Part" then
 					if v:FindFirstChild("Exit") then
-						if v.BrickColor == BrickColor.new("Fawn brown") and v.Transparency == 1 and Sent == false then
+						if v.BrickColor == BrickColor.new("Fawn brown") and v.Transparency == 0 and Sent == false then
 							FoundCollector = true
 							CollectorLocation = "Desert"
 							SendToWebhook()
