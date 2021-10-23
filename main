@@ -77,7 +77,7 @@ local success, err = pcall(function()
 							SendToWebhook()
 							Sent = true
 						end
-						if v.BrickColor == BrickColor.new("Bronze") and v.Transparency == 1 and Sent == false then
+						if v.BrickColor == BrickColor.new("Bronze") and v.Transparency == 0 and Sent == false then
 							FoundCollector = true
 							CollectorLocation = "Jungle"
 							SendToWebhook()
