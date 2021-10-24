@@ -32,10 +32,6 @@ local success, err = pcall(function()
 		RandomServer = Servers[math.random(1, #Servers)]
 	end
 
-	Player.Character.Humanoid.Died:Connect(function()
-		Player:Kick("home boy how u die hopefully u didnt clog LOL")
-	end)
-
     local function ServerHop()
 		repeat task.wait() until not Player.Character:FindFirstChild("Danger") task.wait(0.15)
 
@@ -133,6 +129,11 @@ local success, err = pcall(function()
 	CheckNearPlayers()
     task.wait(2.5)
 	GetOutOfFF()
+	
+	Player.Character.Humanoid.Died:Connect(function()
+		Player:Kick("home boy how u die hopefully u didnt clog LOL")
+	end)
+
 	while CheckTimes < 20 do
 		task.wait(0.5)
         CheckTimes = CheckTimes + 1
