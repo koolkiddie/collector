@@ -127,7 +127,7 @@ local success, err = pcall(function()
 	CheckNearPlayers()
     task.wait(2.5)
 	GetOutOfFF()
-	while CheckTimes < 16 do
+	while CheckTimes < 20 do
 		task.wait(0.5)
         CheckTimes = CheckTimes + 1
 		CheckNearPlayers()
@@ -142,7 +142,7 @@ local success, err = pcall(function()
 	Player.OnTeleport:Connect(function(State, PlaceId, Spawn)
 		if State.Name == "Failed" then
 			rconsoleprint('@@RED@@')
-			rconsoleprint("\nServer hop failed...")
+			rconsoleprint("\nServer hop failed...\n")
 			rconsoleprint('@@GREEN@@')
 			task.delay(math.random(5, 6), function()
 				NewServer()
@@ -150,7 +150,7 @@ local success, err = pcall(function()
 			end, math.random(5, 6))
 		end
 		if State.Name == "InProgress" then
-			rconsoleprint("\nServer hop success..")
+			rconsoleprint("\nServer hop success..\n")
 		end
 	end)
 end)
