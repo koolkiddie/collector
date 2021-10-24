@@ -32,7 +32,13 @@ local success, err = pcall(function()
 		RandomServer = Servers[math.random(1, #Servers)]
 	end
 
+	Player.Character.Humanoid.Died:Connect(function()
+		Player:Kick("home boy how u die hopefully u didnt clog LOL")
+	end)
+
     local function ServerHop()
+		repeat task.wait() until not Player.Character:FindFirstChild("Danger") task.wait(0.15)
+
 		if FoundCollector == false then
 			if string.lower(RandomServer.Name) == tostring(game.JobId) then
 				NewServer()
@@ -107,7 +113,7 @@ local success, err = pcall(function()
 	local function CheckNearPlayers()
         for i,v in pairs(game:GetService("Workspace").Live:GetChildren()) do
             if v:FindFirstChild("Torso") then
-                if (game.Players.LocalPlayer.Character.Torso.Position - v:FindFirstChild("Torso").Position).Magnitude < 250 and (game.Players.LocalPlayer.Character.Torso.Position - v:FindFirstChild("Torso").Position).Magnitude ~= 0 then
+                if (game.Players.LocalPlayer.Character.Torso.Position - v:FindFirstChild("Torso").Position).Magnitude < 500 and (game.Players.LocalPlayer.Character.Torso.Position - v:FindFirstChild("Torso").Position).Magnitude ~= 0 then
                     Reason = "Something got too close..."
                     task.wait(0.3)
                     ServerHop()
@@ -131,6 +137,7 @@ local success, err = pcall(function()
 		task.wait(0.5)
         CheckTimes = CheckTimes + 1
 		CheckNearPlayers()
+		IdentifyCollector()
 	end
 
 	if (FoundCollector == false) then
@@ -141,16 +148,14 @@ local success, err = pcall(function()
 
 	Player.OnTeleport:Connect(function(State, PlaceId, Spawn)
 		if State.Name == "Failed" then
-			rconsoleprint('@@RED@@')
-			rconsoleprint("\nServer hop failed...\n")
-			rconsoleprint('@@GREEN@@')
-			task.delay(math.random(5, 6), function()
-				NewServer()
-				ServerHop()
-			end, math.random(5, 6))
+			task.wait(7)
+			rconsoleprint("\nServer hop failed...")
+			NewServer()
+			task.wait(0.1)
+			ServerHop()
 		end
 		if State.Name == "InProgress" then
-			rconsoleprint("\nServer hop success..\n")
+			rconsoleprint("\nServer hop success...")
 		end
 	end)
 end)
