@@ -7,7 +7,7 @@ local success, err = pcall(function()
 	if game.PlaceId ~= 3541987450 then
 		return
 	end
-	rconsoleprint('@@BLUE@@')
+	rconsoleprint('@@GREEN@@')
 	rconsolename("lostics little cat boy collector tool")
 
 	local ReplicatedStorage = game:GetService("ReplicatedStorage")
@@ -40,77 +40,81 @@ local success, err = pcall(function()
 			else
 				game.ReplicatedStorage:WaitForChild("Requests").JoinPublicServer:FireServer(string.lower(RandomServer.Name))
 			end
-			rconsoleprint('\nServer hopping...' .. "\nNew Server: " .. game.JobId .. " (" .. tostring(RandomServer.ServerName.Value) .. ")")
+			rconsoleprint('\nServer hopping...' .. "\nNew Server: " .. game.JobId .. " (" .. tostring(RandomServer.ServerName.Value) .. ")".."\n"..Reason)
 		else
 			return
 		end
 	end
 
     local function SendToWebhook()
-		local content_body = HttpService:JSONEncode({
-			username = "meow collector";
-			content  = tostring("@everyone " .. Player.Name .. " found a collector!" .. "\nUse this to join: ```game.ReplicatedStorage:WaitForChild('Requests').JoinPublicServer:FireServer('" .. game.JobId .. "')```" .. "\nLocation: " .. tostring(CollectorLocation));
-		})
-		if syn.request and typeof(syn.request) == "function" then
-			syn.request({
-				Url = Webhook;
-				Method = "POST";
-				Body = content_body;
-				Headers = {
-					["Content-Type"] = "application/json"
-				}
-			})
-		else
-			game:HttpPost(Webhook, content_body, false, "application/json")
-		end
+        if Sent == false then
+            local content_body = HttpService:JSONEncode({
+                username = "meow collector";
+                content  = tostring("@everyone " .. Player.Name .. " found a collector!" .. "\nUse this to join: ```game.ReplicatedStorage:WaitForChild('Requests').JoinPublicServer:FireServer('" .. game.JobId .. "')```" .. "\nLocation: " .. tostring(CollectorLocation));
+            })
+            if syn.request and typeof(syn.request) == "function" then
+                syn.request({
+                    Url = Webhook;
+                    Method = "POST";
+                    Body = content_body;
+                    Headers = {
+                        ["Content-Type"] = "application/json"
+                    }
+                })
+            else
+                game:HttpPost(Webhook, content_body, false, "application/json")
+            end
+        end
 	end
 
 	local function IdentifyCollector()
 		if not Player.Character:FindFirstChild("Immortal") then
-			CheckTimes = CheckTimes + 1
-			for i, v in pairs(workspace:GetDescendants()) do
-				if v:IsA("Part") and v.Name == "Part" then
-					if v:FindFirstChild("Exit") then
-						if v.BrickColor == BrickColor.new("Fawn brown") and v.Transparency == 0 and Sent == false then
-							FoundCollector = true
-							CollectorLocation = "Desert"
-							SendToWebhook()
-							Sent = true
-						end
-						if v.BrickColor == BrickColor.new("Bronze") and v.Transparency == 0 and Sent == false then
-							FoundCollector = true
-							CollectorLocation = "Jungle"
-							SendToWebhook()
-							Sent = true
-						end
-						if v.BrickColor == BrickColor.new("Smoky grey") and v.Transparency == 1 and Sent == false then
-							FoundCollector = true
-							CollectorLocation = "Plains"
-							SendToWebhook()
-							Sent = true
-						end
-						if v.BrickColor == BrickColor.new("Dark stone grey") and v.Transparency == 1 and Sent == false then
-							FoundCollector = true
-							CollectorLocation = "Beach"
-							SendToWebhook()
-							Sent = true
-						end
-					end
-				end
-			end
-		end
+            for i,v in pairs(workspace:GetChildren()) do
+                if v:FindFirstChild("Exit") then
+                    if tostring(v.BrickColor) == "Dark stone grey" and v.Transparency == 1 then
+                        FoundCollector = true
+                        CollectorLocation = "Beach"
+                        SendToWebhook()
+                        Sent = true
+                    end
+                    if tostring(v.BrickColor) == "Smokey grey" and v.Transparency == 1 then
+                        FoundCollector = true
+                        CollectorLocation = "Jungle"
+                        SendToWebhook()
+                        Sent = true
+                    end
+                    if tostring(v.BrickColor) == "Bronze" and v.Transparency == 1 then
+                        FoundCollector = true
+                        CollectorLocation = "Plains"
+                        SendToWebhook()
+                        Sent = true
+                    end
+                    if tostring(v.BrickColor) == "Fawn brown" and v.Transparency == 1 then
+                        FoundCollector = true
+                        CollectorLocation = "Desert"
+                        SendToWebhook()
+                        Sent = true
+                    end
+                end
+            end
+        end
 	end
 
+    ReplicatedStorage:FindFirstChild("Requests").DevilDoor.OnClientEvent:Connect(function()
+        IdentifyCollector()
+    end)
+
 	local function CheckNearPlayers()
-		pcall(function()
-			for i, v in pairs(Players:GetChildren()) do
-				if v ~= Players.LocalPlayer and 300 > (v.Character.HumanoidRootPart.Position - Players.LocalPlayer.Character.HumanoidRootPart.Position).Magnitude then
-					Reason = "Player too close"
-					task.wait(0.3)
-					ServerHop()
-				end
-			end
-		end)
+        for i,v in pairs(game:GetService("Workspace").Live:GetChildren()) do
+            if v:FindFirstChild("Torso") then
+                if (game.Players.LocalPlayer.Character.Torso.Position - v:FindFirstChild("Torso").Position).Magnitude < 250 and (game.Players.LocalPlayer.Character.Torso.Position - v:FindFirstChild("Torso").Position).Magnitude ~= 0 then
+                    Reason = "Something got too close..."
+                    task.wait(0.3)
+                    ServerHop()
+					return
+                end
+            end
+        end
 	end
 
 	local function GetOutOfFF()
@@ -119,41 +123,34 @@ local success, err = pcall(function()
 
 	task.wait(3)
 	firesignal(Player.PlayerGui:WaitForChild("StartMenu"):WaitForChild("Choices"):WaitForChild("Play", math.huge).MouseButton1Click)
-	task.wait(0.7)
+	task.wait(4)
 	CheckNearPlayers()
-	local checkagain = 0
-	while checkagain < 14 do
-		task.wait(0.5)
-		checkagain = checkagain + 1
-		CheckNearPlayers()
-	end
-	task.wait(6.5)
+    task.wait(2.5)
 	GetOutOfFF()
-	while CheckTimes < 6 do
-		task.wait(2)
+	while CheckTimes < 16 do
+		task.wait(0.5)
+        CheckTimes = CheckTimes + 1
 		CheckNearPlayers()
-		IdentifyCollector()
 	end
 
 	if (FoundCollector == false) then
 		Reason = "No Collector In Server"
-		task.wait(0.1)
+		task.wait(0.2)
 		ServerHop()
 	end
+
 	Player.OnTeleport:Connect(function(State, PlaceId, Spawn)
 		if State.Name == "Failed" then
 			rconsoleprint('@@RED@@')
 			rconsoleprint("\nServer hop failed...")
-			rconsoleprint('@@BLUE@@')
+			rconsoleprint('@@GREEN@@')
 			task.delay(math.random(5, 6), function()
 				NewServer()
 				ServerHop()
 			end, math.random(5, 6))
 		end
 		if State.Name == "InProgress" then
-			rconsoleprint('@@GREEN@@')
-			rconsoleprint("\nServer hop success...".."("..tostring(Reason)..")")
-			rconsoleprint('@@BLUE@@')
+			rconsoleprint("\nServer hop success..")
 		end
 	end)
 end)
