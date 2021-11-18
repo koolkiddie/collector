@@ -1,4 +1,3 @@
-
 local Players = game:GetService("Players")
 local Webhook = "https://discord.com/api/webhooks/881712729755373649/G7VLNM6HvYZZkXuW_NLrG3-6P9opX-uGDAOkEcyNXQd9_j5tPoFCa0r9D1qvvAyssJvR"
 
@@ -42,7 +41,7 @@ local success, err = pcall(function()
 			else
 				game.ReplicatedStorage:WaitForChild("Requests").JoinPublicServer:FireServer(string.lower(RandomServer.Name))
 			end
-			rconsoleprint('\nServer hopping...' .. "\nNew Server: " .. game.JobId .. " (" .. tostring(RandomServer.ServerName.Value) .. ")".."\n"..Reason)
+			rconsoleprint('\nServer hopping...' .. "\nNew Server: " .. game.JobId .. " (" .. tostring(RandomServer.ServerName.Value) .. ")".."\n\n"..Reason)
 		else
 			return
 		end
@@ -110,7 +109,7 @@ local success, err = pcall(function()
         for i,v in pairs(game:GetService("Workspace").Live:GetChildren()) do
             if v:FindFirstChild("Torso") then
                 if (game.Players.LocalPlayer.Character.Torso.Position - v:FindFirstChild("Torso").Position).Magnitude < 500 and (game.Players.LocalPlayer.Character.Torso.Position - v:FindFirstChild("Torso").Position).Magnitude ~= 0 then
-                    Reason = "Something got too close..."
+                    Reason = "\nSomething got too close..."
                     task.wait(0.3)
                     ServerHop()
 					return
@@ -127,14 +126,15 @@ local success, err = pcall(function()
 	firesignal(Player.PlayerGui:WaitForChild("StartMenu"):WaitForChild("Choices"):WaitForChild("Play", math.huge).MouseButton1Click)
 	task.wait(4)
 	CheckNearPlayers()
-    task.wait(2.5)
+    task.wait(2)
 	GetOutOfFF()
 	
 	Player.Character.Humanoid.Died:Connect(function()
+        task.wait(1)
 		Player:Kick("home boy how u die hopefully u didnt clog LOL")
 	end)
 
-	while CheckTimes < 20 do
+	while CheckTimes < 31 do
 		task.wait(0.5)
         CheckTimes = CheckTimes + 1
 		CheckNearPlayers()
