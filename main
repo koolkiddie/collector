@@ -41,7 +41,7 @@ local success, err = pcall(function()
 			else
 				game.ReplicatedStorage:WaitForChild("Requests").JoinPublicServer:FireServer(string.lower(RandomServer.Name))
 			end
-			rconsoleprint('\nServer hopping...' .. "\nNew Server: " .. game.JobId .. " (" .. tostring(RandomServer.ServerName.Value) .. ")".."\n\n"..Reason)
+			rconsoleprint('\nServer hopping...' .. "\nNew Server: " .. game.JobId .. " (" .. tostring(RandomServer.ServerName.Value) .. ")".."\n"..Reason)
 		else
 			return
 		end
